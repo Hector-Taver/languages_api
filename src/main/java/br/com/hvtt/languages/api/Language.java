@@ -1,6 +1,12 @@
 package br.com.hvtt.languages.api;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "mainLanguages")
 public class Language {
+  @Id
+  private String id;
   private String title;
   private String image;
   private int ranking;
@@ -9,6 +15,10 @@ public class Language {
     this.title = title;
     this.image = image;
     this.ranking = ranking;
+  }
+
+  public String getId() {
+    return id;
   }
 
   public String getTitle() {
