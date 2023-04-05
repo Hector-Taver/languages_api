@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,9 +19,7 @@ public class LanguageController {
 
   @GetMapping("/languages")
   public List<Language> getLanguages() {
-    List<Language> languages = repository.findAll();
-
-    return languages;
+    return repository.findAll();
   }
 
   @GetMapping("/languages/{id}")
@@ -30,8 +29,16 @@ public class LanguageController {
 
   @PostMapping("/languages")
   public Language registerLanguage(@RequestBody Language language) {
-    Language registeredLanguage = repository.save(language);
+    return repository.save(language);
+  }
 
-    return registeredLanguage;
+  @PutMapping("/languages/{id}")
+  public Language updateLanguage(@PathVariable String id, @RequestBody Language language) {
+    if (!repository.existsById(id)) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+
+    language.setId(id);
+    return repository.save(language);
   }
 }
